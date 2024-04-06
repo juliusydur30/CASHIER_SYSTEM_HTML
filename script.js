@@ -212,6 +212,97 @@ let script = function () {
           loadScript.updateOrderItemTable();
         }
       }
+
+      // checkout
+      if (targetElClassList.contains("checkoutBtn")) {
+        // check if order item is empty
+        // alert dialog
+
+        if (Object.keys(loadScript.orderItems).length) {
+          // display items
+          // total amount
+
+          let orderItemsHtml = "";
+          let counter = 1;
+          let totalAmt = 0.0;
+          for (const [pid, orderItem] of Object.entries(
+            loadScript.orderItems
+          )) {
+            orderItemsHtml +=
+              '\
+            <div class="row checkoutTblContentContainer">\
+              <div class="col-md-2 checkoutTblContent">' +
+              counter +
+              '</div>\
+              <div class="col-md-4 checkoutTblContent">' +
+              orderItem["name"] +
+              '</div>\
+              <div class="col-md-3 checkoutTblContent">' +
+              loadScript.addCommas(orderItem["orderQty"]) +
+              '</div>\
+              <div class="col-md-3 checkoutTblContent">₱ ' +
+              loadScript.addCommas(orderItem["amount"].toFixed(2)) +
+              "</div>\
+            </div>";
+            totalAmt += orderItem["amount"];
+            counter++;
+          }
+
+          // Calculate tax and discount
+          const taxRate = 0.1; // 10% tax rate
+          const discountRate = 0.01; // 1% discount rate
+
+          const taxAmount = totalAmt * taxRate;
+          const discountAmount = totalAmt * discountRate;
+
+          // Apply tax and discount to the total amount
+          const totalAmountWithTax = totalAmt + taxAmount;
+          const finalTotalAmount = totalAmountWithTax - discountAmount;
+
+          let content =
+            '\
+          <div class="row">\
+            <div class="col-md-7">\
+              <p class="checkoutTblHeaderContainer_title">Items</p>\
+              <div class="row checkoutTblHeaderContainer">\
+              <div class="col-md-2 checkoutTblHeader">#</div>\
+              <div class="col-md-4 checkoutTblHeader">Product Name</div>\
+              <div class="col-md-3 checkoutTblHeader">Ordered Qty</div>\
+              <div class="col-md-3 checkoutTblHeader">Amount</div>\
+              </div>' +
+            orderItemsHtml +
+            '\
+            </div>\
+            <div class="col-md-5">\
+              <div class="checkoutTotalAmountContainer">\
+              <span class="checkout_amt">+' +
+            loadScript.addCommas(taxAmount.toFixed(2)) +
+            '</span> <br/>\
+              <span class="checkout_amt_title">TAX (10%)</span>\
+              </div>\
+              <div class="checkoutTotalAmountContainer">\
+              <span class="checkout_amt">-' +
+            loadScript.addCommas(discountAmount.toFixed(2)) +
+            '</span> <br/>\
+              <span class="checkout_amt_title">DISCOUNT (1%)</span>\
+              </div>\
+              <div class="checkoutTotalAmountContainer">\
+              <span class="checkout_amt">' +
+            loadScript.addCommas(finalTotalAmount.toFixed(2)) +
+            '</span> <br/>\
+              <span class="checkout_amt_title">TOTAL AMOUNT</span>\
+              </div>\
+            </div>\
+          </div>';
+
+          BootstrapDialog.confirm({
+            type: BootstrapDialog.TYPE_INFO,
+            title: "<strong>CHECKOUT</strong>",
+            cssClass: "checkoutDialog",
+            message: content,
+          });
+        }
+      }
     });
   };
 

@@ -97,7 +97,7 @@
 </script>
 
 <!-- js -->
-<script src="script.js?v=? time() ?>"></script>
+<script src="script.js?v=?= time() ?>"></script>
 
 <!-- jquery -->
 <script src="js/jquery/jquery-3.7.1.min.js"></script>

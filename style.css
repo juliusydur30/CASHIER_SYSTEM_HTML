@@ -145,3 +145,45 @@ span.item_total--label {
 .quantityUpdateBtn_plus {
   color: #17b70e;
 }
+.checkoutDialog .modal-dialog {
+  max-width: 919px !important;
+  width: 100%;
+}
+.checkoutTotalAmountContainer {
+  text-align: center;
+  margin-top: 40px;
+}
+.checkout_amt {
+  font-size: 36px;
+  font-weight: bold;
+  color: #ff4b4b;
+}
+.checkout_amt_title {
+  display: block;
+  font-size: 17px;
+  color: #7e7e7e;
+}
+.checkoutTblHeader {
+  font-size: 16px;
+  color: #b0b0b0;
+  text-align: center;
+}
+.checkoutTblContent {
+  font-size: 16px;
+  color: #652b39;
+  text-align: center;
+}
+.checkoutTblContentContainer {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.checkoutTblContentContainer:nth-child(odd) {
+  background: #f4f4f4;
+}
+.checkoutTblHeaderContainer {
+  margin-bottom: 10px;
+}
+.checkoutTblHeaderContainer_title {
+  font-size: 26px;
+  color: #b5b5b5;
+}
