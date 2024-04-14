@@ -300,6 +300,21 @@ let script = function () {
             title: "<strong>CHECKOUT</strong>",
             cssClass: "checkoutDialog",
             message: content,
+            btnOKLabel: "Checkout",
+            callback: function (checkout) {
+              if (checkout) {
+                // Save to database
+                $.post(
+                  "product.php?action=checkout",
+                  {
+                    data: loadScript.orderItems,
+                    totalAmt: loadScript.totalOrderAmount,
+                  },
+                  function (response) {},
+                  "json"
+                );
+              }
+            },
           });
         }
       }
