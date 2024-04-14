@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2024 at 11:59 AM
+-- Generation Time: Apr 14, 2024 at 02:18 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,6 +24,47 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cashier`
+--
+
+CREATE TABLE `cashier` (
+  `cashier_id` int(11) NOT NULL,
+  `transaction_id` int(11) NOT NULL,
+  `date_time` datetime NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order`
+--
+
+CREATE TABLE `order` (
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `total_cost` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment`
+--
+
+CREATE TABLE `payment` (
+  `transaction_id` int(11) NOT NULL,
+  `order_id` varchar(100) NOT NULL,
+  `total_amount` decimal(10,2) NOT NULL,
+  `tax` double NOT NULL,
+  `discount` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -40,19 +81,39 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `img`, `product_name`, `price`, `stock`) VALUES
-(1, 'yellow_pad.jpg', 'Yellow Paper', 70.00, 1),
-(2, 'ruler.jpg', 'Ruler', 15.00, 2),
-(3, 'glue_stick.jpg', 'Stick Glue', 10.00, 12),
+(1, 'yellow_pad.jpg', 'Yellow Paper', 70.00, 0),
+(2, 'ruler.jpg', 'Ruler', 15.00, 0),
+(3, 'glue_stick.jpg', 'Stick Glue', 10.00, 10),
 (4, 'white_glue.jpg', 'White Glue', 45.00, 7),
 (5, 'ballpen_panda.jpg', 'Panda Ballpen', 12.00, 15),
-(6, 'sharpener.jpg', 'Sharpener', 10.00, 6),
+(6, 'sharpener.jpg', 'Sharpener', 10.00, 0),
 (7, 'crayola.jpg', 'Crayola', 45.00, 8),
-(8, 'eraser.jpg', 'Eraser', 10.00, 17),
-(9, 'id_lace.jpg', 'ID Lace', 100.00, 23);
+(8, 'eraser.jpg', 'Eraser', 10.00, 13),
+(9, 'id_lace.jpg', 'ID Lace', 100.00, 8);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `cashier`
+--
+ALTER TABLE `cashier`
+  ADD PRIMARY KEY (`cashier_id`),
+  ADD KEY `payment` (`transaction_id`);
+
+--
+-- Indexes for table `order`
+--
+ALTER TABLE `order`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `product` (`product_id`);
+
+--
+-- Indexes for table `payment`
+--
+ALTER TABLE `payment`
+  ADD PRIMARY KEY (`transaction_id`);
 
 --
 -- Indexes for table `products`
@@ -65,10 +126,44 @@ ALTER TABLE `products`
 --
 
 --
+-- AUTO_INCREMENT for table `cashier`
+--
+ALTER TABLE `cashier`
+  MODIFY `cashier_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `order`
+--
+ALTER TABLE `order`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `payment`
+--
+ALTER TABLE `payment`
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `cashier`
+--
+ALTER TABLE `cashier`
+  ADD CONSTRAINT `payment` FOREIGN KEY (`transaction_id`) REFERENCES `payment` (`transaction_id`);
+
+--
+-- Constraints for table `order`
+--
+ALTER TABLE `order`
+  ADD CONSTRAINT `product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
